@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 @Lazy(false)
-public class DefaultCache {
+public class DefaultCache implements Cache{
 	public DefaultCache() {
 		System.out.println("==DefaultCache==");
 	}
