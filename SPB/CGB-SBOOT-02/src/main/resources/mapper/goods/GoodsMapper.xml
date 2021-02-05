@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.cy.pj.goods.GoodsDao">
+ <!-- 基于多个id删除商品信息 -->
+ 	<!--<delete id="deleteByIds">
+ 		delete from tb_goods where id in (1,2,3) 
+ 		<foreach collection="ids" open="(" close=")" separator="," item="id">
+               #{id}
+        </foreach>
+ 	</delete>
+ 	<select id="testSelectAll" resultType="com.cy.pj.goods.pojo.Goods">
+ 		select * from tb_goods as tbGoods
+ 	</select>-->
+ 	<!-- 方案1：存在健壮性和性能问题
+	<delete id="deleteByIds"> 
+	   delete from tb_goods 
+	       where id in 
+	  <foreach collection="ids" open="(" close=")" separator="," item="id"> 
+		#{id} 
+	  </foreach>
+    </delete> -->
+	
+
+	<!-- 方案2：对健壮性进行优化 
+ 
+	<delete id="deleteByIds">
+		delete from tb_goods
+		<if test="ids!=null and ids.length>0">
+			where id in 
+			<foreach collection="ids" open="(" close=")" separator=","
+				item="id">
+				#{id}
+			</foreach>
+		</if>
+		<if test="ids==null or ids.length==0">
+			where 1=2
+		</if>
+	</delete>-->
+	
+	<!-- 方案3：从代码层面进行优化
+ 
+	<delete id="deleteByIds">
+		delete from tb_goods
+		<choose>
+			<when test="ids!=null and ids.length>0">
+				where id in 
+		<foreach collection="ids" open="(" close=")" separator=","
+					item="id">
+					#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			    where 1=2
+			</otherwise>
+		</choose>
+	</delete> -->
+
+	<!-- 方案4：从sql性能角度优化in的使用 -->
+	<delete id="deleteByIds">
+	    delete from tb_goods
+		<choose>
+			<when test="ids!=null and ids.length>0">
+				<foreach collection="ids"  separator="or" item="id">
+					where id=#{id}
+				</foreach>
+			</when>
+			<otherwise>
+			    where 1=2
+			</otherwise>
+		</choose>
+	</delete>	
+</mapper>
+ 	

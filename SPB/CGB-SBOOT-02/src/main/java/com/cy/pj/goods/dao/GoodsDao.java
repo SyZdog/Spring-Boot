@@ -1,7 +1,14 @@
-package com.cy.pj.goods;
+package com.cy.pj.goods.dao;
+
+
+
+import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import com.cy.pj.goods.pojo.Goods;
 /*
  * DAO(Date Access Object)：数据访问对象
  * GoodsDao用来表示商品表对应的数据访问对象
@@ -12,6 +19,11 @@ import org.apache.ibatis.annotations.Mapper;
  * */
 @Mapper
 public interface GoodsDao {
+	//查询全部
+ 	@Select("select id name,remark,createdTime from tb_goods")
+	List<Goods> selectAll();
+	//基于多个id去删除商品信息
+	int deleteByIds(Integer...ids);
 	/*
 	 * 基于id去删除商品信息
 	 * */
