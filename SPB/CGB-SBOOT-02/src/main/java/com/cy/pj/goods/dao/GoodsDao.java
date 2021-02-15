@@ -5,6 +5,7 @@ package com.cy.pj.goods.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -19,15 +20,20 @@ import com.cy.pj.goods.pojo.Goods;
  * */
 @Mapper
 public interface GoodsDao {
-	//查询全部
- 	@Select("select id name,remark,createdTime from tb_goods")
-	List<Goods> selectAll();
-	//基于多个id去删除商品信息
-	int deleteByIds(Integer...ids);
+	//添加商品信息
+	@Insert("insert into tb_goods (name,remark,createdTime) values (#{name},#{remark},now())")
+	int insertGoods(Goods goods);
 	/*
 	 * 基于id去删除商品信息
 	 * */
 	//通过注解声明动态SQL
 	@Delete("delete from tb_goods where id=#{id}")
-	int deleteById(Integer id);
+	int deleteById(Long id);
+	
+	//查询全部
+ 	@Select("select * from tb_goods")
+	List<Goods> selectAll();
+	//基于多个id去删除商品信息
+	int deleteByIds(Integer...ids);
+	
 }

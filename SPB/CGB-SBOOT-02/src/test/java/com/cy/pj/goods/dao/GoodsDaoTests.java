@@ -22,7 +22,7 @@ public class GoodsDaoTests {
 	}
 	@Test
 	public void testDeleteById() {
-		int rows = goodsDao.deleteById(1);
+		int rows = goodsDao.deleteById(1L);
 		System.out.println("影响行数为："+rows);
 	}
 }

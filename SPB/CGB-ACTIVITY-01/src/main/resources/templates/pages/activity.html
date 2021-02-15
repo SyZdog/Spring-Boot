@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>This is Activity Page</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>title</th>
+				<th>category</th>
+				<th>startTime</th>
+				<th>endTime</th>
+				<th>state</th>
+				<th>remark</th>
+				<th>createdUser</th>
+				<th>createdTime</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="a: ${list}">
+				<td th:text="${a.id}"></td>
+				<td th:text="${a.title}"></td>
+				<td th:text="${a.category}"></td>
+				<td th:text="${a.startTime}"></td>
+				<td th:text="${a.endTime}"></td>
+				<td th:text="${a.state}"></td>
+				<td th:text="${a.remark}"></td>
+				<td th:text="${a.createdUser}"></td>
+				<td th:text="${a.createdTime}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

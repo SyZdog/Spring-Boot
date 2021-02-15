@@ -6,5 +6,43 @@
 </head>
 <body>
 	<div>This is a goods</div>
+	<form action="doSaveGoods" method="post">
+		<table>
+			<tr>
+				<td>商品名称</td>
+			</tr>
+			<tr>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<td>商品备注</td>
+			</tr>
+			<tr>
+				<td><textarea rows="5" cols="23" name="remark"></textarea></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="save"></td>
+			</tr>
+		</table>
+	</form>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Remark</th>
+				<th>CreatedTime</th>
+				<th>Option</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="g: ${goods}">
+				<td th:text="${g.name}"></td>
+				<td th:text="${g.remark}"></td>
+				<td th:text="${#dates.format(g.createdTime, 'yyyy/MM/dd HH:mm')}"></td>
+				<td> <a th:href="@{/doDeleteById(id=${g.id})}">删除</a>
+         		</td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>
