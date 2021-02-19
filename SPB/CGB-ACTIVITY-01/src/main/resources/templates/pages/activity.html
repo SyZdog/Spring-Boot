@@ -6,6 +6,7 @@
 </head>
 <body>
 	<h1>This is Activity Page</h1>
+	<button onclick="javascript:location.href='activity_edit'">创建活动</button>
 	<table>
 		<thead>
 			<tr>
@@ -18,7 +19,7 @@
 				<th>remark</th>
 				<th>createdUser</th>
 				<th>createdTime</th>
-
+				<th>Operation</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,12 +27,13 @@
 				<td th:text="${a.id}"></td>
 				<td th:text="${a.title}"></td>
 				<td th:text="${a.category}"></td>
-				<td th:text="${a.startTime}"></td>
-				<td th:text="${a.endTime}"></td>
-				<td th:text="${a.state}"></td>
+				<td th:text="${#temporals.format(a.startTime, 'yyyy/MM/dd HH:mm:ss')}"></td>
+				<td th:text="${#temporals.format(a.endTime, 'yyyy/MM/dd HH:mm:ss')}"></td>
+				<td th:text="${a.state==1?'进行中':'已结束'}"></td>
 				<td th:text="${a.remark}"></td>
 				<td th:text="${a.createdUser}"></td>
-				<td th:text="${a.createdTime}"></td>
+				<td th:text="${#temporals.format(a.createdTime, 'yyyy/MM/dd HH:mm:ss')}"></td>
+				<td><a th:href="@{/activity/doFindById(id=${a.id})}">update</a><td>
 			</tr>
 		</tbody>
 	</table>
