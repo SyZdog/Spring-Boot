@@ -33,7 +33,7 @@
 				<td th:text="${a.remark}"></td>
 				<td th:text="${a.createdUser}"></td>
 				<td th:text="${#temporals.format(a.createdTime, 'yyyy/MM/dd HH:mm:ss')}"></td>
-				<td><a th:href="@{/activity/doFindById(id=${a.id})}">update</a><td>
+				<td><a th:href="@{/activity/doFindById(id=${a.id})}">update</a></td>
 			</tr>
 		</tbody>
 	</table>

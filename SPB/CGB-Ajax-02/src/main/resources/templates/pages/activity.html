@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>This is Activity Page</h1>
+	<button onclick="javascript:location.href='activity_edit'">创建活动</button>
+	<table>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>title</th>
+				<th>category</th>
+				<th>startTime</th>
+				<th>endTime</th>
+				<th>state</th>
+				<th>remark</th>
+				<th>createdUser</th>
+				<th>createdTime</th>
+				<th>Operation</th>
+			</tr>
+		</thead>
+		<tbody id="tbodyId">
+			<tr><td colspan="7">Data is Loading......</td></tr>
+		</tbody>
+	</table>
+	<script type="text/javascript">
+		//定义ajax的Get请求函数
+		function doAjaxGet(url,params,callback){
+			//1.创建ajax异步请求对象XmlHttpRequest（这也是ajax技术应用的入口对象）
+			var xhr = new XMLHttpRequest();
+			//2.设置请求，响应过程的状态监听（通过回调函数处理状态的变化）
+			xhr.onreadystatechange=function(){//callback(回调函数）
+				//基于xhr对象获取的通讯状态，对响应数据进行处理
+				//4表示通讯结束,200表示服务端响应ok
+					if(xhr.readyState==4&&xhr.status==200){//500表示服务端出错了
+						//服务端响应的结果
+						callback(xhr.responseText);
+					}
+			}
+			//3.创建或打开与服务端的链接（设置异步或同步）
+			xhr.open("GET",url+"?"+params,true);//true表示异步
+			//4.发送异步请求
+			xhr.send(null);//Get请求，send方法不传内容
+		}
+		//通过如下函数向服务端发送异步请求获取activity数据并更新到页面
+		function doGetActivitys(){
+			//1.定义请求参数
+			var params="";
+			//2.定义请求的url
+			var url="doFindActivity";
+			//3.发送Ajax异步请求获取服务端资源并更新到页
+			//在浏览器控制台输出result
+			doAjaxGet(url,params,function(result){
+				//console.log(result)
+				//通过doHandleResponseResult处理响应结果
+				doHandleResponseResult(result);
+			});
+		}
+		//处理响应结果
+		function doHandleResponseResult(result){
+			//1.将json格式的字符串转换成json格式的js对象
+			var jsonObj=JSON.parse(result);
+			console.log("jsonObj",jsonObj);
+			//2.将json对象中的数据更新到页面上
+			//2.1迭代jsonObj对象中的数据，并将数据拼接到字符串中
+			var trs="";
+			for(var i = 0; i < jsonObj.length; i++){
+				trs+="<tr>"+
+				"<td>"+jsonObj[i].id+"</td>"+
+				"<td>"+jsonObj[i].title+"</td>"+
+				"<td>"+jsonObj[i].category+"</td>"+
+				"<td>"+new Date(jsonObj[i].startTime).toLocaleString()+"</td>"+
+				"<td>"+new Date(jsonObj[i].endTime).toLocaleString()+"</td>"+
+				"<td>"+jsonObj[i].state+"</td>"+
+				"<td>"+jsonObj[i].remark+"</td>"+
+				"<td>"+jsonObj[i].createdUser+"</td>"+
+				"<td>"+new Date(jsonObj[i].createdTime).toLocaleString()+"</td>"+
+				"<td>delete</td>"+
+				"</tr>"
+			}
+			//2.2将字符串以html形式更新到tbody位置
+			var tBody=document.getElementById("tbodyId");
+			tBody.innerHTML=trs;
+		}
+		//调用doGetActivitys函数，执行
+		doGetActivitys();
+	</script>
+</body>
+</html>

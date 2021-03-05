@@ -17,32 +17,20 @@ import com.cy.activity.service.ActivityService;
 public class ActivityController {
 	@Autowired
 	private ActivityService activityService;
-
-	//数据回显
-	@RequestMapping("doFindById")
-	public String doFindById(Long id,Model model) {
-		Activity act = activityService.findById(id);
-		model.addAttribute("act",act);
-		return "activity_edit";
-	}
 	
 	//提交
 	@RequestMapping("activity_edit")
-	public String doActivityEditUI(Model model) {
-		//model的内容写入activity_edit中
-		model.addAttribute("act",new Activity());
+	public String doActivityEditUI() {
 		return "activity_edit";
 	}
 	
 	//保存
 	@RequestMapping("doSaveActivity")
+	@ResponseBody
 	public String doSaveActivity(Activity entity) {
-		if (entity.getId() == null) {//ID为空，新增
-			activityService.saveActivity(entity);
-		} else {//修改
-			activityService.updateActivity(entity);
-		}
-		return"redirect:doActivityUI";
+		activityService.saveActivity(entity);
+		return "activity";//通过@ResponseBody以普通的字符串返回给页面显示	
+		
 	}
 	//http://localhost/activity/doActivityUI
 	//查询
@@ -50,6 +38,7 @@ public class ActivityController {
 	public String doActivityUI(Model model) {
 		return "activity";
 	}
+	
 	//http://localhost/activity/doFindActivity
 	@RequestMapping("doFindActivity")
 	@ResponseBody //告诉SpringMVC将对象返回转换成json格式字符串

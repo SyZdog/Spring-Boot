@@ -22,7 +22,7 @@
 				<th>Operation</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id="tbodyId">
 			<tr><td colspan="7">Data is Loading......</td></tr>
 		</tbody>
 	</table>
@@ -54,9 +54,37 @@
 			//3.发送Ajax异步请求获取服务端资源并更新到页
 			//在浏览器控制台输出result
 			doAjaxGet(url,params,function(result){
-				console.log(result)
+				//console.log(result)
+				//通过doHandleResponseResult处理响应结果
+				doHandleResponseResult(result);
 			});
 		}
+		//处理响应结果
+	   function  doHandleResponseResult(result){//json格式的字符串
+		   //1.将json格式的字符串转换成json格式的js对象
+		   var jsonObj=JSON.parse(result);
+	       console.log("jsonObj",jsonObj);
+		   //2.将json对象中的数据更新到页面上
+		   //2.1迭代jsonObj对象中的数据，并将数据拼接到字符串中
+		   var trs="";
+		   for(var i=0;i<jsonObj.length;i++){
+			   trs+="<tr>"+
+			   "<td>"+jsonObj[i].id+"</td>"+
+			   "<td>"+jsonObj[i].title+"</td>"+
+			   "<td>"+jsonObj[i].category+"</td>"+
+			   "<td>"+new Date(jsonObj[i].startTime).toLocaleString()+"</td>"+
+			   "<td>"+new Date(jsonObj[i].endTime).toLocaleString()+"</td>"+
+			   "<td>"+jsonObj[i].state+"</td>"+
+			   "<td>"+jsonObj[i].remark+"</td>"+
+			   "<td>"+jsonObj[i].createdUser+"</td>"+
+			  "<td>"+new Date(jsonObj[i].createdTime).toLocaleString()+"</td>"+
+			   "<td>delete</td>"+
+			   "</tr>"
+		   }
+		   //2.2将字符串以html形式更新到tbody位置
+		   var tBody=document.getElementById("tbodyId");
+		   tBody.innerHTML=trs;
+	   }
 		//调用doGetActivitys函数，执行
 		doGetActivitys();
 	</script>
