@@ -136,10 +136,9 @@
   function doSaveOrUpdate(){
 	  //1.获取表单数据
 	   var params=doGetEditFormData();
-	   var rowData=
-	   $("#mainContentId").data("rowData");
+	   var rowData=$("#mainContentId").data("rowData");
 	  //2.异步提交表单数据(post)
-	   var insertUrl="menu/doSaveObject";
+	   var insertUrl="menu/doUpdateObject";
 	   var updateUrl="menu/doUpdateObject";
 	   var url=rowData?updateUrl:insertUrl;
 	   if(rowData)params.id=rowData.id;

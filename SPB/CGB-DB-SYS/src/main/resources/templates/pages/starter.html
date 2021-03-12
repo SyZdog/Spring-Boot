@@ -422,7 +422,9 @@ desired effect
 <script type="text/javascript">
    //页面加载完成事件
    $(function(){
-	   doLoadUI("load-log-id","log/log_list");
+		doLoadUI("load-log-id","log/log_list");
+		doLoadUI("load-menu-id","menu/menu_list")
+    doLoadUI("load-role-id","role/role_list")
    })
    //基于某个对象click事件,执行资源加载操作
    function doLoadUI(id,url){

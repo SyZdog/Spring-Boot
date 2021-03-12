@@ -95,7 +95,6 @@ var columns = [
 	field : 'url',
 	align : 'center',
 	valign : 'middle',
-
 	width : '160px'
 }, 
 {
@@ -109,22 +108,22 @@ $(function(){
 	doGetObjects();
 	$(".input-group-btn")
 	.on("click",".btn-delete",doDeleteObject)
-    .on("click",".btn-add,.btn-update",doLoadEditUI);
+	.on("click",".btn-add",doLoadEditUI)
+	.on("click",".btn-update",doLoadEditUI);
 })
 function doLoadEditUI(){
 	var title;
 	//基于点击对象的class属性值,修改标题
 	if($(this).hasClass("btn-add")){
 		title="添加菜单";
-	}else{
+	}else if($(this).hasClass("btn-update")){
 		title="修改菜单";
 		var item=doGetCheckedItem();
 		if(!item){
 			alert("请先选择");
 			return;
 		}
-		$("#mainContentId")
-		.data("rowData",item);
+		$("#mainContentId").data("rowData",item);//数据回显
 	}
 	//异步加载编辑页面
 	var url="menu/menu_edit";
