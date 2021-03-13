@@ -15,7 +15,11 @@ import com.cy.pj.sys.service.SysRoleService;
 public class SysRoleController {
 	@Autowired
 	private SysRoleService sysRoleService;
-	
+	@RequestMapping("doFindObjectById")
+	public JsonResult doFindObjectById(Integer id) {
+		return new JsonResult(sysRoleService.findObjectById(id));
+	}
+
 	@RequestMapping("doSaveObject")
 	public JsonResult doSaveObject(SysRole entity, Integer[] menuIds) {
 		sysRoleService.saveObject(entity, menuIds);

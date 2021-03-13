@@ -14,6 +14,7 @@ import com.cy.pj.sys.dao.SysRoleMenuDao;
 import com.cy.pj.sys.dao.SysUserRoleDao;
 import com.cy.pj.sys.entity.SysRole;
 import com.cy.pj.sys.service.SysRoleService;
+import com.cy.pj.sys.vo.SysRoleMenuVo;
 @Service
 public class SysRoleServiceImpl implements SysRoleService{
 	@Autowired
@@ -71,6 +72,23 @@ public class SysRoleServiceImpl implements SysRoleService{
 		//2.2保存角色菜单关系数据
 		sysRoleMenuDao.insertObject(entity.getId(), menuIds);
 		return rows;
+	}
+	@Override
+	public SysRoleMenuVo findObjectById(Integer id) {
+		//1.参数校验
+		if(id==null||id<1)
+			throw new IllegalArgumentException("参数无效");
+		//2.查询数据并校验
+		//2.1查找角色自身信息
+		SysRoleMenuVo rm = sysRoleDao.findObjectById(id);
+		if(rm==null)
+			throw new IllegalArgumentException("对象可能已经不存在");
+		//2.2查找角色对应的菜单id
+		List<Integer> menuIds = sysRoleMenuDao.findMenuIdsByRoleId(id);
+		rm.setMenuIds(menuIds);
+		//3.返回查询结果
+		return rm;
+
 	}
 
 }

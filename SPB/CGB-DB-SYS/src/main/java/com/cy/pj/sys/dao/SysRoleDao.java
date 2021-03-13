@@ -6,9 +6,11 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.cy.pj.sys.entity.SysRole;
+import com.cy.pj.sys.vo.SysRoleMenuVo;
 
 @Mapper
 public interface SysRoleDao {
+	SysRoleMenuVo findObjectById(Integer id);
 	/**
 	 * 保存角色自身信息
 	 * @param entity

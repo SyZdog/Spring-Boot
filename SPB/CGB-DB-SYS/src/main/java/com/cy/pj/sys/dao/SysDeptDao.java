@@ -22,6 +22,7 @@ public interface SysDeptDao {
 	  List<Node> findZTreeNodes();
 	  
 	  int updateObject(SysDept entity);
+	  
 	  int insertObject(SysDept entity);
 	  
 	  @Select("select count(*) from sys_depts where parentId=#{id}")

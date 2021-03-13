@@ -3,6 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cy.pj.sys.dao.SysRoleDao">
+   <select id="findObjectById" resultType="com.cy.pj.sys.vo.SysRoleMenuVo">
+     select id,name,note
+     from sys_roles
+     where id=#{id}
+   </select>
 <!-- insert标签中的
      1)useGeneratedKeys 表示要使用insert操作后的主键值
      2)keyProperty表示将主键值存储到参数对象的id属性上 -->
