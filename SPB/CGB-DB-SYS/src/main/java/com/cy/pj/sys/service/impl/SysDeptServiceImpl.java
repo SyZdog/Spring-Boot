@@ -3,9 +3,9 @@ package com.cy.pj.sys.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.cy.pj.common.exception.ServiceException;
 import com.cy.pj.common.vo.Node;
@@ -39,7 +39,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 		//1.合法验证
 		if(entity==null)
 		throw new ServiceException("保存对象不能为空");
-		if(StringUtils.isEmpty(entity.getName()))
+		if(ObjectUtils.isEmpty(entity.getName()))
 		throw new ServiceException("部门不能为空");
 		int rows;
 		//2.更新数据
@@ -58,7 +58,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 		//1.合法验证
 		if(entity==null)
 		throw new ServiceException("保存对象不能为空");
-		if(StringUtils.isEmpty(entity.getName()))
+		if(ObjectUtils.isEmpty(entity.getName()))
 		throw new ServiceException("部门不能为空");
 		//2.保存数据
 		int rows=sysDeptDao.insertObject(entity);

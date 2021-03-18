@@ -48,7 +48,7 @@
 <script type="text/javascript">
    $(function(){   
 	  $("#pageId").load("doPageUI",function(){
-		  doGetObjects();
+		  doGetObject();
 	  });
 	  $(".input-group-btn")
 	  .on("click",".btn-search",doQueryObjects)
@@ -95,7 +95,7 @@
 	   $.post(url,params,function(result){
 		   if(result.state==1){
 			   alert(result.message);
-			   doGetObjects();
+			   doGetObject();
 		   }else{
 			   alert(result.message);
 		   }
@@ -104,9 +104,9 @@
    }
    function doQueryObjects(){
 	   $("#pageId").data("pageCurrent",1);
-	   doGetObjects();
+	   doGetObject();
    }
-   function doGetObjects(){
+   function doGetObject(){
 	   debugger
 	   //1.params
 	   //获取在Page.html中绑定的当前页码值

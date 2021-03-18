@@ -3,10 +3,41 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cy.pj.sys.dao.SysRoleDao">
-   <select id="findObjectById" resultType="com.cy.pj.sys.vo.SysRoleMenuVo">
-     select id,name,note
-     from sys_roles
-     where id=#{id}
+	<update id = "updateObject">
+		update sys_roles
+		set 
+		name = #{name},
+		note = #{note},
+		modifiedUser = #{modifiedUser},
+		modifiedTime = now()
+		where id = #{id}
+	</update>
+<!-- resultMap元素一般应用于高级映射，例如
+	1）自定义字段映射
+	2）嵌套查询映射
+	3）多表关联查询映射 -->
+	<resultMap type = "com.cy.pj.sys.vo.SysRoleMenuVo" id="sysRoleMenuVo">
+	<!-- id元素一般应用于主键映射 -->
+		<id property = "id" column = "id"/>
+		<id property = "name" column = "name"/>
+		<id property = "note" column = "note"/>
+	<!-- 基于角色id，再次查询菜单id，将查询结果存储到menuIds属性上，
+	collection 元素一般应用于one2many（1——>多）？？查询或映射-->
+		<!-- 方案2 <collection property = "menuIds"
+					column = "id"
+					select ="com.cy.pj.sys.dao.SysRoleMenuDao.findMenuIdsByRoleId">
+		</collection>-->
+		<!-- 方案3 -->
+		<collection property = "menuIds"
+					ofType = "integer">
+					<result column = "menu_id"/>
+		</collection>
+	</resultMap>
+   <select id="findObjectById" resultMap="sysRoleMenuVo">
+     select r.id, r.name, r.note, rm.menu_id
+     from sys_roles r left join sys_role_menus rm
+     on r.id = rm.role_id
+     where r.id=#{id}
    </select>
 <!-- insert标签中的
      1)useGeneratedKeys 表示要使用insert操作后的主键值

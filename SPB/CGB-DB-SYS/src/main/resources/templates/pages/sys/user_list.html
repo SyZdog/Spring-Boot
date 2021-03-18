@@ -48,7 +48,7 @@
 <script type="text/javascript">
    $(document).ready(function(){
 	   $("#pageId").load("doPageUI",function(){
-		   doGetObjects();
+		   doGetObject();
 	   });
 	   $(".input-group-btn")
 	   .on("click",".btn-search",doQueryObjects)
@@ -135,10 +135,10 @@
    //处理查询按钮事件
    function doQueryObjects(){
 	   $("#pageId").data("pageCurrent",1);
-	   doGetObjects();
+	   doGetObject();
    }
    //页面加载完成异步加载当前页数据
-   function doGetObjects(){
+   function doGetObject(){
 	   var url="user/doFindPageObjects";
 	   var pageCurrent=$("#pageId").data("pageCurrent");
 	   if(!pageCurrent)pageCurrent=1;

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysUserDao">
+      <update id="updateObject">
+        update sys_users
+        set username=#{username},
+            mobile=#{mobile},
+            email=#{email},
+            deptId=#{deptId},
+            modifiedTime=now(),
+            modifiedUser=#{modifiedUser}
+         where id=#{id}
+   </update>
+   
+	<select id="findObjectById" resultMap="sysUserDeptVo">
+		select * from sys_users
+		where id=#{id}
+	</select>
+	
+	<insert id="insertObject" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into sys_users
+		(username,password,deptId,email,mobile,salt,valid,
+		createdTime,modifiedTime,createdUser,modifiedUser)
+		values
+		(#{username},#{password},#{deptId},#{email},#{mobile},#{salt},#{valid},
+		now(),now(),#{createdUser},#{modifiedUser})
+	</insert>
+
+	<sql id="queryWhereId">
+		from sys_users
+		<where>
+			<if test="username!=null and username!=''">
+				username like concat("%",#{username},"%")
+			</if>
+		</where>
+	</sql>
+	
+	<!--resultMap用于实现高级映射 -->
+	<resultMap type="com.cy.pj.sys.vo.SysUserDeptVo"
+		id="sysUserDeptVo">
+		<!-- 基于部门id再次查询用户对应的部门信息 -->
+		<association property="sysDept" column="deptId"
+			select="com.cy.pj.sys.dao.SysDeptDao.findById"></association>
+	</resultMap>
+	
+	<!-- 分页获取记录 -->
+	<select id="findPageObjects" resultMap="sysUserDeptVo">
+		select *
+		<include refid="queryWhereId" />
+		order by createdTime desc
+		limit #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 获取总记录数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*)
+		<include refid="queryWhereId" />
+	</select>
+</mapper>
+  

@@ -10,11 +10,15 @@ import com.cy.pj.common.vo.PageObject;
 import com.cy.pj.sys.entity.SysRole;
 import com.cy.pj.sys.service.SysRoleService;
 @RestController
-@Controller
 @RequestMapping("/role/")
 public class SysRoleController {
 	@Autowired
 	private SysRoleService sysRoleService;
+	@RequestMapping("doUpdateObject")
+	public JsonResult doUpdateObejct(SysRole entity, Integer[] menuIds) {
+		sysRoleService.updateObject(entity, menuIds);
+		return new JsonResult("update ok");
+	}
 	@RequestMapping("doFindObjectById")
 	public JsonResult doFindObjectById(Integer id) {
 		return new JsonResult(sysRoleService.findObjectById(id));
@@ -36,6 +40,10 @@ public class SysRoleController {
 	public JsonResult doFindPageObjects(String name,Long pageCurrent) {
 		PageObject<SysRole> pageObject = sysRoleService.findPageObjects(name, pageCurrent);
 		return new JsonResult(pageObject);
-		
+	}
+	
+	@RequestMapping("doFindRoles")
+	public JsonResult doFindRoles() {
+		return new JsonResult(sysRoleService.findOjects());
 	}
 }

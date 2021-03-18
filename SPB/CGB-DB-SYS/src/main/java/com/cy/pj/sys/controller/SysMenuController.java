@@ -19,11 +19,10 @@ public class SysMenuController {
 	private SysMenuService sysmenuService;
 	
 	@RequestMapping("doUpdateObject")
-	public JsonResult doUpdateObject(SysMenu entity) {
+	public JsonResult doUpdateObject(SysMenu entity){
 		sysmenuService.updateObject(entity);
 		return new JsonResult("update ok");
 	}
-	
 	@RequestMapping("doFindZtreeMenuNodes")
 	public JsonResult doFindZtreeMenuNodes() {
 		return new JsonResult(sysmenuService.findZtreeMenuNodes());

@@ -5,9 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import com.cy.pj.common.exception.ServiceException;
+import com.cy.pj.common.vo.CheckBox;
 import com.cy.pj.common.vo.PageObject;
 import com.cy.pj.sys.dao.SysRoleDao;
 import com.cy.pj.sys.dao.SysRoleMenuDao;
@@ -15,6 +16,8 @@ import com.cy.pj.sys.dao.SysUserRoleDao;
 import com.cy.pj.sys.entity.SysRole;
 import com.cy.pj.sys.service.SysRoleService;
 import com.cy.pj.sys.vo.SysRoleMenuVo;
+
+import ch.qos.logback.core.joran.conditional.IfAction;
 @Service
 public class SysRoleServiceImpl implements SysRoleService{
 	@Autowired
@@ -56,13 +59,12 @@ public class SysRoleServiceImpl implements SysRoleService{
 			throw new ServiceException("记录可能已经不存在");
 		return 0;
 	}
-	@SuppressWarnings("deprecation")
 	@Override
 	public int saveObject(SysRole entity, Integer[] menuIds) {
 		//1.参数校验
 		if(entity == null)
 			throw new IllegalArgumentException("保存对象不能为空");
-		if(StringUtils.isEmpty(entity.getName()))
+		if(ObjectUtils.isEmpty(entity.getName()))
 			throw new IllegalArgumentException("用户名不能为空");
 		if(menuIds == null || menuIds.length == 0)
 			throw new IllegalArgumentException("必须为角色授予权限");
@@ -90,5 +92,27 @@ public class SysRoleServiceImpl implements SysRoleService{
 		return rm;
 
 	}
-
+	@Override
+	public int updateObject(SysRole entity, Integer[] menuIds) {
+		//1.参数校验
+		if(entity == null)
+			throw new IllegalArgumentException("保存对象不能为空");
+		if(ObjectUtils.isEmpty(entity.getName()))
+			throw new IllegalArgumentException("角色名不能为空");
+		if(menuIds == null || menuIds.length == 0)
+			throw new IllegalArgumentException("必须为角色授予权限");
+		//2.保存数据
+		//2.1 保存角色自身信息
+		int rows = sysRoleDao.insertObject(entity);
+		//2.2 保存角色菜单关系数据
+		//2.2.1 先删除原有关系型数据
+		sysRoleMenuDao.deleteObjectByRoleId(entity.getId());
+		//2.2.2 再添加新的关系数据
+		sysRoleMenuDao.insertObject(entity.getId(), menuIds);
+		return rows;
+	}
+	@Override
+	public List<CheckBox> findOjects() {
+		return sysRoleDao.findObjects();
+	}
 }

@@ -15,10 +15,15 @@ public class SysRoleDaoTests {
 	@Autowired
 	private SysRoleMenuDao sysRoleMenuDao;
 	@Test
-	public void testFindObjecyById() {
+	public void testFindObjecyById01() {
 		SysRoleMenuVo rm = sysRoleDao.findObjectById(47);
 		List<Integer> menuIds = sysRoleMenuDao.findMenuIdsByRoleId(47);
 		rm.setMenuIds(menuIds);
+		System.out.println(rm);
+	}
+	@Test
+	public void testFindObjectByIds02() {
+		SysRoleMenuVo rm = sysRoleDao.findObjectById(47);
 		System.out.println(rm);
 	}
 }
