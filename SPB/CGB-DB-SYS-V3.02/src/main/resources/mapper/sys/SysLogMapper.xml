@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.pj.sys.dao.SysLogDao">
+	<delete id="deleteObjects">
+		delete from sys_logs
+		<where>
+			<choose>
+				<when test="array!=null and array.length>0">
+					<foreach collection="array" separator="or" item="id">
+						id=#{id}
+					</foreach>
+				</when>
+				<otherwise>
+					2!=2
+				</otherwise>
+			</choose>
+		</where>
+	</delete>
+	<sql id="queryWhereId">
+		from sys_logs
+		<where>
+			<if test="username!=null and username!=''">
+				username like concat("%",#{username},"%")
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 分页获取记录 -->
+	<select id="findPageObject" resultType="com.cy.pj.sys.entity.SysLog">
+		select id,username,operation,method,params,ip,time,createdTime
+		<include refid="queryWhereId"/>
+		order by createdTime desc
+		<!-- 起始页和页面大小 查询或者导出某个数据表或者查询集的前几条或者后几条记录 -->
+		limit #{startIndex},#{pageSize}
+	</select>
+
+	<!-- 获取总行数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*)
+		<include refid="queryWhereId"/>
+	</select>
+</mapper>
