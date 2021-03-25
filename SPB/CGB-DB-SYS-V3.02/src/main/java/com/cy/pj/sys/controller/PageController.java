@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 @Controller
 public class PageController {
+	@RequestMapping("doLoginUI")
+	public String doLoginUI() {
+		return "login";
+	}
 	@RequestMapping("doIndexUI")
 	public String doIndexUI() {
 		return "starter";

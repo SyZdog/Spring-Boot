@@ -42,5 +42,10 @@ public class SysLogServiceImpl implements SysLogService {
 			throw new ServiceException("记录可能不存在");
 		return rows;
 	}
+	@Override
+	public void saveObject(SysLog entity) {
+		sysLogDao.insertObject(entity);
+		
+	}
 
 }

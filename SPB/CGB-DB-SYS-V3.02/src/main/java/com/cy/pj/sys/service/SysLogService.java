@@ -4,6 +4,8 @@ import com.cy.pj.common.vo.PageObject;
 import com.cy.pj.sys.entity.SysLog;
 
 public interface SysLogService {
+	void saveObject(SysLog entity);
+	
 	int deleteObjects(int ...ids);
 	/**
 	 * 基于查询条件进行日志信息的分页查询
@@ -11,6 +13,5 @@ public interface SysLogService {
 	 * @param pageCurrent 当前页码值
 	 * @return 当前页的记录+分页信息
 	 * */
-	
 	PageObject<SysLog> findPageObject(String username,Long pageCurrent);
 }

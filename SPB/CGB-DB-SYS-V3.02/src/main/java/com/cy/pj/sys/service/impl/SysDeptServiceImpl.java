@@ -4,9 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import com.cy.pj.common.annotation.ClearCache;
+import com.cy.pj.common.annotation.RequiredCache;
 import com.cy.pj.common.exception.ServiceException;
 import com.cy.pj.common.vo.Node;
 import com.cy.pj.sys.dao.SysDeptDao;
@@ -18,10 +23,11 @@ import com.cy.pj.sys.service.SysDeptService;
 public class SysDeptServiceImpl implements SysDeptService {
 	@Autowired
 	private SysDeptDao sysDeptDao;
+	@Cacheable(value = "deptCache")
+	@Transactional(readOnly = true)
 	@Override
 	public List<Map<String, Object>> findObjects() {
-		List<Map<String, Object>> list=
-		sysDeptDao.findObjects();
+		List<Map<String, Object>> list = sysDeptDao.findObjects();
 		if(list==null||list.size()==0)
 		throw new ServiceException("没有部门信息");
 		return list;
@@ -34,6 +40,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 		throw new ServiceException("没有部门信息");
 		return list;
 	}
+	@ClearCache(key = ("deptData"))
 	@Override
 	public int updateObject(SysDept entity) {
 		//1.合法验证
@@ -52,7 +59,7 @@ public class SysDeptServiceImpl implements SysDeptService {
 		//3.返回数据
 		return rows;
 	}
-	
+	@CacheEvict(value="deptCache", allEntries = true)
 	@Override
 	public int saveObject(SysDept entity) {
 		//1.合法验证

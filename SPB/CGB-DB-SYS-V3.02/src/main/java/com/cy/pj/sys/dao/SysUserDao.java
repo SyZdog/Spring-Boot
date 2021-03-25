@@ -3,6 +3,7 @@ package com.cy.pj.sys.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.cy.pj.sys.entity.SysUser;
@@ -10,6 +11,8 @@ import com.cy.pj.sys.vo.SysUserDeptVo;
 
 @Mapper
 public interface SysUserDao {
+	@Select("select * from sys_users where username=#{username}")
+	SysUser findUserByUserName(String username);
 	/**
 	 * 更新用户自身信息
 	 * @param entity

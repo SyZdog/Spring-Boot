@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import com.cy.pj.common.annotation.RequiredLog;
 import com.cy.pj.common.exception.ServiceException;
 import com.cy.pj.common.vo.PageObject;
 import com.cy.pj.sys.dao.SysRoleDao;
@@ -25,6 +26,7 @@ public class SysUserServiceImpl implements SysUserService{
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao;
 	@Override
+	@RequiredLog(operation = "用户查询")
 	public PageObject<SysUserDeptVo> findPageObjects(String username, Long pageCurrent) {
 		//1.参数校验
 		if(pageCurrent == null || pageCurrent < 1)
@@ -40,6 +42,7 @@ public class SysUserServiceImpl implements SysUserService{
 		//封装查询结果
 		return new PageObject<>(records, rowCount, pageSize, pageCurrent);
 	}
+	@RequiredLog(operation = "禁用启用")
 	@Override
 	public int validById(Long id, Integer valid) {
 		//1.参数校验
