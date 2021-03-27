@@ -4,6 +4,7 @@ package com.cy.pj.common.config;
 import java.util.LinkedHashMap;
 
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
@@ -16,13 +17,14 @@ public class SpringShiroConfig {
 	 * @return
 	 */
 	@Bean//由此注解描述的方法会交给spring框架管理，默认bean的名字为方法名
-	public SecurityManager securityManager() {
+	public SecurityManager securityManager(Realm realm) {
 		DefaultWebSecurityManager securityManager=new DefaultWebSecurityManager();
+		securityManager.setRealm(realm);
 		return securityManager;
 	}
 	/**
 	 *  配置ShiroFilterFactoryBean对象
-	 *  基于此对象创建过滤器工厂，通过过滤器工厂创建过滤器，通过过滤器对请求进行过滤
+	 *  基于此对象创建过滤器工厂，通过“过滤器工厂”创建过滤器，通过过滤器对请求进行过滤
 	 * @param securityManager
 	 * @return
 	 */
@@ -40,9 +42,12 @@ public class SpringShiroConfig {
          map.put("/build/**","anon");
          map.put("/dist/**","anon");
          map.put("/plugins/**","anon");
+         map.put("/user/doLogin","anon");
+         map.put("/doLogout","logout");//logout由shiro提供
          //除了匿名访问的资源，其他都需要认证（”authc“）访问
          map.put("/**", "authc");
          sBean.setFilterChainDefinitionMap(map);//设置过滤器链定义图
          return sBean;
 	}
+	
 }
