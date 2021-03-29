@@ -22,15 +22,15 @@ public interface SysUserRoleDao {
 	 * @return
 	 */
 	@Select("select role_id from sys_user_roles where user_id=#{id}")
-	List<Integer> findRoleIdsByUserId(Long id);
+	List<Integer> findRoleIdsByUserId(Integer id);
 	/**
 	 * 保存用户角色关系的数据
 	 * @param userId
 	 * @param roleIds
 	 * @return
 	 */
-	int insertObjects(@Param("userId") Integer userId, 
-					  @Param("roleIds") Integer[] roleIds);
+	int insertObjects(@Param("userId")Integer userId, 
+					  @Param("roleIds")Integer[] roleIds);
 	/**
 	 * 基于角色id删除角色关系数据
 	 * @param roleId

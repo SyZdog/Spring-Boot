@@ -1,5 +1,9 @@
 package com.cy.pj.sys.service.realm;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -9,28 +13,65 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import com.cy.pj.sys.dao.SysMenuDao;
+import com.cy.pj.sys.dao.SysRoleMenuDao;
 import com.cy.pj.sys.dao.SysUserDao;
+import com.cy.pj.sys.dao.SysUserRoleDao;
+import com.cy.pj.sys.entity.SysMenu;
 import com.cy.pj.sys.entity.SysUser;
 
-
+@Service
 public class ShiroUserRealm extends AuthorizingRealm{
 	@Autowired
 	private SysUserDao sysUserDao;
+	@Autowired
+	private SysUserRoleDao sysUserRoleDao;
+	@Autowired
+	private SysRoleMenuDao sysRoleMenuDao;
+	@Autowired
+	private SysMenuDao sysMenuDao;
 	//授权
+	/**
+	 * 获取登录用户的权限信息并进行封装
+	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		// TODO Auto-generated method stub
-		return null;
+		//1.获取登录用户身份信息
+		SysUser user = (SysUser) principals.getPrimaryPrincipal();
+		//2.基于用户id获取角色id
+		List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(user.getId());
+		if (roleIds == null || roleIds.size()==0) throw new AuthorizationException();
+		//3.基于角色id获取对应的菜单id
+		List<Integer> menuIds = sysRoleMenuDao.findMenuIdsByRoleIds(roleIds.toArray(new Integer[]{}));
+		if (menuIds == null || menuIds.size() == 0) throw new AuthorizationException();
+		//4.基于菜单id获取授权标识
+		List<String> permissions = sysMenuDao.findPermissions(menuIds.toArray(new Integer[]{}));
+		if (permissions == null || permissions.size() == 0) throw new AuthorizationException();
+		//5.对用户的权限信息进行封装
+		Set<String> stringPermissions = new HashSet<>();
+		for (String per : permissions) {
+			if(!ObjectUtils.isEmpty(per)) {
+				stringPermissions.add(per);
+			}
+		}
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		info.setStringPermissions(stringPermissions);
+		return info;//此对象会返回给授权管理器
 	}
+
 	//认证
 	/**
-	 * 基于此方法的返回值告诉shiro框架我们采用什么加密算法
+	 * 基于此方法的返回值告诉shiro框架采用什么加密算法
 	 */
 	@Override
 	public CredentialsMatcher getCredentialsMatcher() {

@@ -13,8 +13,11 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface SysRoleMenuDao {
+	
 	@Select("select menu_id from sys_role_menus where role_id=#{id}")
 	List<Integer> findMenuIdsByRoleId(Integer id);
+	
+	List<Integer> findMenuIdsByRoleIds( @Param("roleIds")Integer[] roleIds);
 	/**
 	 * 保存菜单角色关系数据
 	 * @param roleId
@@ -32,4 +35,5 @@ public interface SysRoleMenuDao {
 	 */
 	@Delete("delete from sys_role_menus where menu_id=#{menuId}")
 	int deleteObjectByMenuId(Integer id);
+
 }

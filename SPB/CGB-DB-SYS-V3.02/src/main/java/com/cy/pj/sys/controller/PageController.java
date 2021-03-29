@@ -1,8 +1,12 @@
 package com.cy.pj.sys.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.cy.pj.common.util.ShiroUtils;
+import com.cy.pj.sys.entity.SysUser;
 @RequestMapping("/")
 @Controller
 public class PageController {
@@ -11,7 +15,9 @@ public class PageController {
 		return "login";
 	}
 	@RequestMapping("doIndexUI")
-	public String doIndexUI() {
+	public String doIndexUI(Model model) {
+		SysUser user = ShiroUtils.getUser();
+		model.addAttribute("username", user.getUsername());
 		return "starter";
 		//访问路径：http://localhost/doInexUI
 		//1.starer会返回给前端控制器（DispatcherServlet)

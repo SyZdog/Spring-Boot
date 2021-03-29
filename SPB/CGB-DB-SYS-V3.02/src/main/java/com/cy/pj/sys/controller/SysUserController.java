@@ -17,8 +17,14 @@ public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
 	
+	@RequestMapping("doUpdatePassword")
+	public JsonResult doUpdatePassword(String pwd, String newPwd, String cfgPwd) {
+		sysUserService.updatePassword(pwd, newPwd, cfgPwd);
+		return new JsonResult("update ok");
+	}
+	
 	@RequestMapping("doLogin")
-	public JsonResult doLogin(String username, String password) {
+	public JsonResult doLogin(String username, String password, boolean isRememberMe) {
 		//1.获取subject对象
 		Subject subject = SecurityUtils.getSubject();
 		//2.提交用户请求
@@ -26,6 +32,7 @@ public class SysUserController {
 		UsernamePasswordToken token = new UsernamePasswordToken();
 		token.setUsername(username);
 		token.setPassword(password.toCharArray());
+		token.setRememberMe(isRememberMe);
 		//2.2对用户信息身份认证
 		subject.login(token);//提交给securityManager
 		/**
@@ -45,7 +52,7 @@ public class SysUserController {
 	}
 	
 	@RequestMapping("doFindObjectById")
-	public JsonResult doFindObjectById(Long id) {
+	public JsonResult doFindObjectById(Integer id) {
 		return new JsonResult(sysUserService.findObjectById(id));
 	}
 	

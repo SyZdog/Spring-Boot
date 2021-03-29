@@ -1,6 +1,5 @@
 package com.cy.pj.sys.service;
 
-import java.util.List;
 import java.util.Map;
 
 import com.cy.pj.common.vo.PageObject;
@@ -8,6 +7,14 @@ import com.cy.pj.sys.entity.SysUser;
 import com.cy.pj.sys.vo.SysUserDeptVo;
 
 public interface SysUserService {
+	/**
+	 * 修改密码
+	 * @param password
+	 * @param newPassword
+	 * @param cfgPassword
+	 * @return
+	 */
+	int updatePassword(String password, String newPassword, String cfgPassword);
 	/**
 	 * 更新用户自身信息以及用户对应的用户角色信息
 	 * @param entity
@@ -20,7 +27,7 @@ public interface SysUserService {
 	 * @param id
 	 * @return
 	 */
-	Map<String, Object> findObjectById(Long id);
+	Map<String, Object> findObjectById(Integer id);
 	/**
 	 * 保存用户自身信息以及用户对应的用户角色信息
 	 * @param entity

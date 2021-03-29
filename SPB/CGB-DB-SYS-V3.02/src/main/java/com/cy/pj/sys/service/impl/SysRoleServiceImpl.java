@@ -78,12 +78,12 @@ public class SysRoleServiceImpl implements SysRoleService{
 	@Override
 	public SysRoleMenuVo findObjectById(Integer id) {
 		//1.参数校验
-		if(id==null||id<1)
+		if(id == null|| id< 1)
 			throw new IllegalArgumentException("参数无效");
 		//2.查询数据并校验
 		//2.1查找角色自身信息
 		SysRoleMenuVo rm = sysRoleDao.findObjectById(id);
-		if(rm==null)
+		if(rm == null)
 			throw new IllegalArgumentException("对象可能已经不存在");
 		//2.2查找角色对应的菜单id
 		List<Integer> menuIds = sysRoleMenuDao.findMenuIdsByRoleId(id);

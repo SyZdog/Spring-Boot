@@ -9,10 +9,14 @@ import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.cy.pj.common.vo.JsonResult;
 
-@ControllerAdvice
+//@ControllerAdvice
+//@ResponseBody
+@RestControllerAdvice
 /**
  * @ControllerAdvice 注解描述的类为spring mvc中的一个全局异常处理类
  * 此类中可以定义多个全局异常处理方法，这些方法需要使用@ExceptionHandler注解
@@ -25,13 +29,13 @@ import com.cy.pj.common.vo.JsonResult;
 public class GlobalExceptionHandler {
 	//@ExceptionHandler注解用来描述异常处理方法
 	@ExceptionHandler(RuntimeException.class)
-	@ResponseBody
 	public JsonResult doHandleRuntimeException(RuntimeException e) {
+			System.out.println("GlobalExceptionHandler.doHandleRuntimeException()");
 			e.printStackTrace();
 			return new JsonResult(e);
-	}
+	} 
+	
 	@ExceptionHandler(ShiroException.class)
-	@ResponseBody
 	public JsonResult doHandleShiroException(ShiroException e) {
 		JsonResult r = new JsonResult();
 		r.setState(0);

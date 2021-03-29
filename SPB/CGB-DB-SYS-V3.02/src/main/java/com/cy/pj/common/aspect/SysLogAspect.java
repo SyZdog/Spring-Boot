@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.cy.pj.common.annotation.RequiredLog;
 import com.cy.pj.common.util.IPUtils;
+import com.cy.pj.common.util.ShiroUtils;
 import com.cy.pj.sys.entity.SysLog;
 import com.cy.pj.sys.service.SysLogService;
 
@@ -60,6 +60,8 @@ public class SysLogAspect {
 	private SysLogService sysLogService;
 	private void saveLog(ProceedingJoinPoint jp, long time) throws Exception{
 		//1.获取用户行为数据
+		//1.1获取调用目标方法时的传递的参数
+		String params = Arrays.toString(jp.getArgs());
 		//1.2获取目标方法所在的类型
 		Class<? extends Object> targetCls = jp.getTarget().getClass();//获取到的是类型
 		String targetClsName = targetCls.getName();//获取的是类型的名
@@ -74,12 +76,10 @@ public class SysLogAspect {
     	//if(requiredLog != null) operation=requiredLog.operation();//字符串替换
 		ms.getName();//获取的是目标方法的方法名
 		String targetClsMethodName = targetClsName + "." + ms.getName();
-		//1.1获取调用目标方法时的传递的参数
-		String params = Arrays.toString(jp.getArgs());
 		//2.封装用户行为数据
 		SysLog entity = new SysLog();
-		entity.setUsername(IPUtils.getIpAddr());
-		entity.setUsername("admin");
+		entity.setIp(IPUtils.getIpAddr());
+		entity.setUsername(ShiroUtils.getUserName());
 		entity.setOperation(operation);
 		entity.setMethod(targetClsMethodName);
 		entity.setParams(params);

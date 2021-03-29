@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.cy.pj.common.vo.Node;
@@ -14,6 +15,8 @@ import com.cy.pj.sys.entity.SysMenu;
 public interface SysMenuDao {
 	
 	int updateObject(SysMenu entity);
+	
+	List<String> findPermissions(@Param("menuIds")Integer[] menuIds);
 	
 	int insertObject(SysMenu entity);
 	/**
