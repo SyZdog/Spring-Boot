@@ -156,12 +156,13 @@ under the License.
       <url>http://my.repository.com/repo/path</url>
     </mirror>
      -->
-     <mirror>
-        <id>aliyun</id>
-        <name>aliyun for maven</name>
-        <mirrorOf>*</mirrorOf>
-        <url>https://maven.aliyun.com/repository/public</url>
-     </mirror>
+<!--阿里云镜像-->
+		<mirror>
+	        <id>nexus-aliyun</id>
+	        <mirrorOf>*</mirrorOf>
+	        <name>Nexus aliyun</name>
+	        <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+	 	</mirror>
   </mirrors>
 
   <!-- profiles
